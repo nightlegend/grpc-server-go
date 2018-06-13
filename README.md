@@ -38,4 +38,9 @@ export ETCD_ADDR = ""
 go run main.go -n 3
 ```
 
+![Gopher image](doc/start.png)
+
+![Gopher image](doc/request.png)
+
+
 <small>Keep update to here for latest changed. Thanks for you love it.</small>
