@@ -1,4 +1,4 @@
-# GO-GRPC-SERVER
+# GRPC-SERVER-GO
 
 [![Build Status](https://travis-ci.org/nightlegend/grpc-server-go.svg?branch=master)](https://travis-ci.org/nightlegend/grpc-server-go) [![codecov](https://codecov.io/gh/nightlegend/grpc-server-go/branch/master/graph/badge.svg)](https://codecov.io/gh/nightlegend/grpc-server-go) [![Go Report Card](https://goreportcard.com/badge/github.com/nightlegend/grpc-server-go)](https://goreportcard.com/report/github.com/nightlegend/grpc-server-go)
 
@@ -9,7 +9,7 @@ GO-GRPC is a grpc server demo written in [golang](https://golang.org/) and [grpc
 
 ![Gopher image](doc/GRPC.jpeg)
 
-<h2>Running GO-GRPC-SERVER</h2>
+<h2>Running GRPC-SERVER-GO</h2>
 
 * Init workdir
 ```sh
@@ -23,7 +23,7 @@ govendor install +local
 
 * Start [ETCD](https://coreos.com/etcd/docs/latest/) server
 
-* Start GO-GRPC-SERVER
+* Start GRPC-SERVER-GO
 
 ```sh
 # HTTP server will listend address(eg:export HTTP_ADDR=":8080")
