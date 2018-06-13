@@ -1,13 +1,15 @@
 # GO-GRPC-SERVER
 
+[![Build Status](https://travis-ci.org/nightlegend/grpc-server-go.svg?branch=master)](https://travis-ci.org/nightlegend/grpc-server-go) [![codecov](https://codecov.io/gh/nightlegend/grpc-server-go/branch/master/graph/badge.svg)](https://codecov.io/gh/nightlegend/grpc-server-go) [![Go Report Card](https://goreportcard.com/badge/github.com/nightlegend/grpc-server-go)](https://goreportcard.com/report/github.com/nightlegend/grpc-server-go)
+
 GO-GRPC is a grpc server demo written in [golang](https://golang.org/) and [grpc](https://grpc.io/). It features better performance, you can faster build your api server by this templete. If you want to try new way, you will love it.
 
 
-<h1>Design</h1>
+<h2>Design</h2>
 
 ![Gopher image](doc/GRPC.jpeg)
 
-<h1>Running GO-GRPC-SERVER</h1>
+<h2>Running GO-GRPC-SERVER</h2>
 
 * Init workdir
 ```sh
@@ -17,7 +19,7 @@ govendor init
 govendor add +external
 govendor install +local
 ```
-<pre> if can`t recognize govendor, please try $GOPATH/bin/govendor.</pre>
+> if can`t recognize govendor, please try $GOPATH/bin/govendor.
 
 * Start [ETCD](https://coreos.com/etcd/docs/latest/) server
 
