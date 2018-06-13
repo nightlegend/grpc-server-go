@@ -7,7 +7,11 @@ GO-GRPC is a grpc server demo written in [golang](https://golang.org/) and [grpc
 
 <h2>Design</h2>
 
+### Overview
 ![Gopher image](doc/GRPC.jpeg)
+
+### LoadBlance
+![Gopher image](doc/LB.png)
 
 <h2>Running GRPC-SERVER-GO</h2>
 
