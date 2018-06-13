@@ -1,9 +1,9 @@
 language: go
 sudo: false
 go:
-  - 1.10
+  - 1.8
 git:
-  depth: 1
+  depth: 2
 
 install:
   - make install
