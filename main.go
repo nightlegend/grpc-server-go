@@ -20,23 +20,32 @@ import (
 	"google.golang.org/grpc/reflection"
 )
 
-const (
-	tcpPort  = 5000
-	tcpAddr  = ":5000"
-	httpAddr = ":8080"
-	etcdAddr = "http://127.0.0.1:2379"
-)
-
 var (
-	serv         = flag.String("service", "grpc_service", "service name")
-	echoEndpoint = flag.String("echo_endpoint", tcpAddr, "endpoint of your service")
-	reg          = flag.String("reg", etcdAddr, "register etcd address")
-	endpointPort = flag.Int("port", tcpPort, "listening port")
-	num          = flag.Int("n", 1, "running process number")
+	httpAddress string
+	etcdAddress string
+	serv        = flag.String("service", "grpc_service", "service name")
+	reg         *string
+	num         = flag.Int("n", 1, "running process number")
 )
 
 type server struct {
 	id int
+}
+
+func init() {
+	httpAddress = os.Getenv("HTTP_ADDR")
+	etcdAddress = os.Getenv("ETCD_ADDR")
+
+	if httpAddress == "" {
+		httpAddress = ":8080"
+	}
+
+	if etcdAddress == "" {
+		reg = flag.String("reg", "http://127.0.0.1:2379", "register etcd address")
+	} else {
+		reg = flag.String("reg", etcdAddress, "register etcd address")
+	}
+
 }
 
 func (s *server) GetName(ctx context.Context, req *pb.Request) (*pb.Response, error) {
@@ -105,8 +114,8 @@ func run() error {
 		glog.Fatal(err)
 		return err
 	}
-
-	return http.ListenAndServe(httpAddr, mux)
+	fmt.Printf("http server listener on: %v\n", httpAddress)
+	return http.ListenAndServe(httpAddress, mux)
 }
 
 func main() {
