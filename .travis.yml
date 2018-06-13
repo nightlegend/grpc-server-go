@@ -3,7 +3,7 @@ sudo: false
 go:
   - 1.10
 git:
-  depth: 3
+  depth: 1
 
 install:
   - make install
