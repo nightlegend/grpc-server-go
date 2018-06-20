@@ -13,6 +13,7 @@ import (
 
 	"github.com/golang/glog"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/nightlegend/grpc-server-go/api/test"
 	grpclb "github.com/nightlegend/grpc-server-go/dns"
 	pb "github.com/nightlegend/grpc-server-go/proto"
 	"golang.org/x/net/context"
@@ -28,10 +29,6 @@ var (
 	num         = flag.Int("n", 1, "running process number")
 )
 
-type server struct {
-	id int
-}
-
 func init() {
 	httpAddress = os.Getenv("HTTP_ADDR")
 	etcdAddress = os.Getenv("ETCD_ADDR")
@@ -41,28 +38,12 @@ func init() {
 	}
 
 	if etcdAddress == "" {
-		reg = flag.String("reg", "http://127.0.0.1:2379", "register etcd address")
+		fmt.Println("set to default endpoint")
+		reg = flag.String("reg", "http://localhost:2379", "register etcd address")
 	} else {
 		reg = flag.String("reg", etcdAddress, "register etcd address")
 	}
 
-}
-
-func (s *server) GetName(ctx context.Context, req *pb.Request) (*pb.Response, error) {
-	if req.Id == "1" {
-		return &pb.Response{Name: "Peter"}, nil
-	}
-	fmt.Printf("%v: Receive is %s\n", time.Now(), req.Id)
-	return &pb.Response{Name: "David Guo"}, nil
-}
-
-func (s *server) Echo(ctx context.Context, req *pb.StringMessage) (*pb.StringMessage, error) {
-	return &pb.StringMessage{Value: "get value from grpc server"}, nil
-}
-
-func (s *server) GetInfo(ctx context.Context, req *pb.Request) (*pb.Response, error) {
-	fmt.Printf("the request from: %d\n", s.id)
-	return &pb.Response{Name: "David Guo"}, nil
 }
 
 // Run a gRPC endpoint
@@ -73,7 +54,7 @@ func endpoint(i int) {
 		glog.Fatalf("Could not listen: %v", err)
 	}
 	// fmt.Println(lis.Addr().(*net.TCPAddr).Port)
-	err = grpclb.Register(*serv, "127.0.0.1", lis.Addr().(*net.TCPAddr).Port, *reg, time.Second*10, 15)
+	err = grpclb.Register(*serv, "localhost", lis.Addr().(*net.TCPAddr).Port, *reg, time.Second*10, 15)
 	if err != nil {
 		panic(err)
 	}
@@ -83,13 +64,13 @@ func endpoint(i int) {
 	go func() {
 		s := <-ch
 		log.Printf("'%v' receive signal '%v'", lis.Addr().(*net.TCPAddr).Port, s)
-		grpclb.UnRegister()
+		grpclb.UnRegister(*serv, *reg)
 		os.Exit(1)
 	}()
 	log.Printf("starting hello service at %d", lis.Addr().(*net.TCPAddr).Port)
 
 	s := googlegrpc.NewServer()
-	pb.RegisterRouteGuideServer(s, &server{id: i})
+	pb.RegisterRouteGuideServer(s, &test.Server{ID: i})
 	// Register reflection service on gRPC server.
 	reflection.Register(s)
 	if err := s.Serve(lis); err != nil {

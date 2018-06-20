@@ -68,10 +68,15 @@ func Register(name string, host string, port int, target string, interval time.D
 }
 
 // UnRegister delete registered service from etcd
-func UnRegister() error {
+func UnRegister(name string, target string) error {
+	var err error
+	serviceKey = fmt.Sprintf("/%s/%s", Prefix, name)
+	client, err := etcd3.New(etcd3.Config{
+		Endpoints: strings.Split(target, ","),
+	})
 	stopSignal <- true
 	stopSignal = make(chan bool, 1) // just a hack to avoid multi UnRegister deadlock
-	var err error
+
 	if _, err := client.Delete(context.Background(), serviceKey); err != nil {
 		log.Printf("grpclb: deregister '%s' failed: %s", serviceKey, err.Error())
 	} else {
